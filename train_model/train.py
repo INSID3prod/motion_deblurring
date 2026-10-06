@@ -26,11 +26,21 @@ if Path('/content/drive/MyDrive').exists():
 else:
     path = Path(r'Z:\datasets\gopro_deblur')
 
-format_path = path / 'format.json'
-blur_path = path / 'blur\images renamed'
-sharp_path = path / 'sharp\images renamed'
+if Path('/content/drive/MyDrive').exists():
+    path = Path('/content/drive/MyDrive/gopro_deblur')
+    format_path = path / 'format.json'
+    blur_path = path / 'blur/images'
+    sharp_path = path / 'sharp/images'
+else:
+    path = Path(r'Z:\datasets\gopro_deblur')
+    format_path = path / 'format.json'
+    blur_path = path / 'blur\images renamed'
+    sharp_path = path / 'sharp\images renamed'
 
 model_save_dir = Path(r'Z:\PYTHON\projects\Motion deblurring\models')
+
+if not model_save_dir.exists():
+    model_save_dir.mkdir()
 
 MODEL_NAME = 'UNet_UNet_Wienner'
 
