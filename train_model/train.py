@@ -125,10 +125,10 @@ val_dataset = Dataset(val_blur, val_sharp, transforms=val_transforms)
 test_dataset = Dataset(test_blur, test_sharp, transforms=val_transforms)
 
 tiny_dataset = Dataset(train_blur, train_sharp, transforms=train_transforms)
-tiny_dataset = torch.utils.data.Subset(tiny_dataset, [0] * 20)
+tiny_dataset = torch.utils.data.Subset(tiny_dataset, [0,1,2,3,4])
 
 tiny_dataset_val = Dataset(train_blur, train_sharp, transforms=val_transforms)
-tiny_dataset_val = torch.utils.data.Subset(tiny_dataset_val, [0])
+tiny_dataset_val = torch.utils.data.Subset(tiny_dataset_val, [0,1])
 print(f"train: {len(train_dataset)} pics\n val: {len(val_dataset)} pics\n test: {len(test_dataset)} pics\n ")
 
 random_pic = train_dataset.__getitem__(np.random.randint(0, len(train_dataset)))[0]
