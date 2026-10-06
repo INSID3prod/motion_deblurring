@@ -38,6 +38,7 @@ else:
     sharp_path = path / 'sharp\images renamed'
 
 model_save_dir = Path(r'Z:\PYTHON\projects\Motion deblurring\models')
+result_save_dir = Path(r'/results')
 
 if not model_save_dir.exists():
     model_save_dir.mkdir()
@@ -249,7 +250,7 @@ def train_and_val(train_load, val_load,
             val_history.append(val_loss)
             if val_loss < best_val_loss:
                 best_val_loss = val_loss
-                torch.save(model.state_dict(), model_save_dir / (MODEL_NAME + '_best.pt'))
+                torch.save(model.state_dict(), model_save_dir / (MODEL_NAME + f'_best_{epoch}_epoch.pt'))
                 print('Best model saved!')
             torch.save({
                 'epoch': epoch,
@@ -257,7 +258,7 @@ def train_and_val(train_load, val_load,
                 'optimizer_state_dict': optimizer.state_dict(),
                 'scheduler_state_dict': scheduler.state_dict() if scheduler is not None else None,
                 'best_val_loss': best_val_loss,
-            }, model_save_dir / 'last.pt')
+            }, model_save_dir / f'last.pt')
 
     return train_history, val_history
 
@@ -267,6 +268,9 @@ def plot_learning_metrics(*args):
     plt.plot(args[0], label='train')
     plt.plot(args[1], label='val')
     plt.show()
+    if not result_save_dir.exists():
+        result_save_dir.mkdir()
+    plt.savefig(result_save_dir / 'learning_metrics.png')
 
 
 if __name__ == "__main__":

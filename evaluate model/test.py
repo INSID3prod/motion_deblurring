@@ -12,8 +12,11 @@ import matplotlib.pyplot as plt
 from train_model.train import Net, tiny_load_val, tiny_load, train_load
 
 model_save_dir = Path(r'Z:\PYTHON\projects\Motion deblurring\models')
-MODEL_NAME = 'UNet_UNet_Wienner'
-model_path = model_save_dir / (MODEL_NAME + '_best.pt')
+MODEL_NAME = '5 images_best.pt'
+model_path = model_save_dir / (MODEL_NAME)
+checkpoint_path = model_save_dir / '5 images last.pt'
+
+LAST = False
 
 device = torch.device("cuda:0")
 
@@ -71,6 +74,11 @@ def show_images(blur, sharp, pred, loss, sobel_diff, title):
     plt.show()
 
 model = Net(10000).to(device)
+
+if checkpoint_path.exists() and LAST:
+    checkpoint = torch.load(checkpoint_path, map_location=device)
+    model.load_state_dict(checkpoint['model_state_dict'])
+
 state_dict = torch.load(model_path, map_location=device)
 model.load_state_dict(state_dict)
 model.eval()
