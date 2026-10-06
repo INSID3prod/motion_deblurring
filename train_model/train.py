@@ -136,7 +136,7 @@ val_dataset = Dataset(val_blur, val_sharp, transforms=val_transforms)
 test_dataset = Dataset(test_blur, test_sharp, transforms=val_transforms)
 
 tiny_dataset = Dataset(train_blur, train_sharp, transforms=train_transforms)
-tiny_dataset = torch.utils.data.Subset(tiny_dataset, [0,1,2,3,4])
+tiny_dataset = torch.utils.data.Subset(tiny_dataset, range(0,20))
 
 tiny_dataset_val = Dataset(train_blur, train_sharp, transforms=val_transforms)
 tiny_dataset_val = torch.utils.data.Subset(tiny_dataset_val, [0,1])
@@ -158,7 +158,7 @@ MODEL = Net(10000).to(DEVICE)
 
 BATCH_SIZE = 10
 
-EPOCHS = 5000
+EPOCHS =25000
 
 LR = 0.0003
 
@@ -202,6 +202,8 @@ def train_and_val(train_load, val_load,
 
     train_history = []
     val_history = []
+
+    print(f'{epochs * len(train_load)} grad_descents training is started')
 
     for epoch in range(start_epoch, epochs):
         model.train()
