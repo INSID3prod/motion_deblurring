@@ -2,6 +2,7 @@ import math
 import cv2
 import numpy as np
 from pathlib import Path
+import time
 
 import torch
 import torch.nn as nn
@@ -89,9 +90,11 @@ with torch.inference_mode():
     blur_pic, sharp_pic = tiny_load_val.dataset.__getitem__(0)
     blur_pic, sharp_pic = blur_pic.to(device).unsqueeze(0), sharp_pic.to(device).unsqueeze(0)
 
+    start_time = time.time()
     pred, pred_f, H = model(blur_pic)
     #pred = model(blur_pic)
     #print(x_f_hat.real.max(),x_f_hat.real.min(),x_f_hat.real.mean())
+print(f'model inference was {time.time() - start_time}ms long')
 print(f'pred stats = {pred.mean().item(), pred.max().item(), pred.min().item()}')
 
 mse = nn.MSELoss()(pred, sharp_pic)

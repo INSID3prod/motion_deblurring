@@ -24,7 +24,7 @@ from utils.Losses import Scharr_loss
 if Path('/content/drive/MyDrive').exists():
     path = Path('/content/drive/MyDrive/datasets/gopro_deblur')
 else:
-    path = Path(r'Z:\datasets\gopro_deblur')
+    path = Path('Z:\datasets\gopro_deblur')
 
 if Path('/content/drive/MyDrive').exists():
     path = Path('/content/drive/MyDrive/gopro_deblur')
@@ -32,13 +32,13 @@ if Path('/content/drive/MyDrive').exists():
     blur_path = path / 'blur/images'
     sharp_path = path / 'sharp/images'
 else:
-    path = Path(r'Z:\datasets\gopro_deblur')
+    path = Path('Z:\datasets\gopro_deblur')
     format_path = path / 'format.json'
     blur_path = path / 'blur\images renamed'
     sharp_path = path / 'sharp\images renamed'
 
-model_save_dir = Path(r'Z:\PYTHON\projects\Motion deblurring\models')
-result_save_dir = Path(r'/results')
+model_save_dir = Path('Z:\PYTHON\projects\Motion deblurring\models')
+result_save_dir = Path(r'Z:\PYTHON\projects\Motion deblurring\train_model\results')
 
 if not model_save_dir.exists():
     model_save_dir.mkdir()
@@ -47,7 +47,7 @@ MODEL_NAME = '192x192_20_images'
 
 train_transforms = v2.Compose([
     v2.ToImage(),
-    v2.RandomCrop((384, 384)),
+    v2.RandomCrop((192, 192)),
     v2.RandomHorizontalFlip(p=0.5),
     v2.RandomVerticalFlip(p=0.5),
     v2.RandomChoice([
@@ -252,7 +252,7 @@ def train_and_val(train_load, val_load,
             val_history.append(val_loss)
             if val_loss < best_val_loss:
                 best_val_loss = val_loss
-                torch.save(model.state_dict(), model_save_dir / (MODEL_NAME + f'_best_{epoch}_epoch.pt'))
+                torch.save(model.state_dict(), model_save_dir / (MODEL_NAME + f'_best.pt'))
                 print('Best model saved!')
             torch.save({
                 'epoch': epoch,
@@ -262,21 +262,25 @@ def train_and_val(train_load, val_load,
                 'best_val_loss': best_val_loss,
             }, model_save_dir / f'last.pt')
 
+            if (epoch + 1) % 100 == 0:
+                plot_learning_metrics(train_history, val_history, fig_name= 'auto_save', show=False)
+                print('metrics added to results')
+
     return train_history, val_history
 
-
-def plot_learning_metrics(*args):
+def plot_learning_metrics(*args, fig_name: str = '', show = True):
     plt.title("Loss")
     plt.plot(args[0], label='train')
     plt.plot(args[1], label='val')
-    plt.show()
+    if show:
+        plt.show()
     if not result_save_dir.exists():
         result_save_dir.mkdir()
-    plt.savefig(result_save_dir / 'learning_metrics.png')
+    plt.savefig(result_save_dir / ('learning_metrics_' + fig_name + '.png'))
 
 
 if __name__ == "__main__":
     train_history, val_history = train_and_val(tiny_load, tiny_load_val)
     # train_history, val_history = train_and_val(train_load, val_load)
 
-    plot_learning_metrics(train_history, val_history)
+    plot_learning_metrics(train_history, val_history, fig_name= 'final', show=True)
