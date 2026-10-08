@@ -43,7 +43,7 @@ result_save_dir = Path(r'/results')
 if not model_save_dir.exists():
     model_save_dir.mkdir()
 
-MODEL_NAME = 'UNet_UNet_Wienner'
+MODEL_NAME = '192x192_20_images'
 
 train_transforms = v2.Compose([
     v2.ToImage(),
@@ -182,7 +182,7 @@ tiny_load_val = DataLoader(tiny_dataset_val, batch_size=1, shuffle=False)
 SCHEDULER = torch.optim.lr_scheduler.CosineAnnealingLR(
     OPTIMIZER,
     T_max=EPOCHS * len(tiny_load),
-    eta_min=1e-6
+    eta_min=1e-5
 )
 
 def train_and_val(train_load, val_load,

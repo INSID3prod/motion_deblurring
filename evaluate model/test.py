@@ -78,9 +78,9 @@ model = Net(10000).to(device)
 if checkpoint_path.exists() and LAST:
     checkpoint = torch.load(checkpoint_path, map_location=device)
     model.load_state_dict(checkpoint['model_state_dict'])
-
-state_dict = torch.load(model_path, map_location=device)
-model.load_state_dict(state_dict)
+else:
+    state_dict = torch.load(model_path, map_location=device)
+    model.load_state_dict(state_dict)
 model.eval()
 print(f'\nmodel summary:')
 #summary(model, input_size=(3,720,1280))
