@@ -21,8 +21,8 @@ import matplotlib.pyplot as plt
 #from fft_deblur.freq_filtering import fft_img, ifft_img, create_filter, create_gaussian_filter, normalize
 from utils.Losses import Scharr_loss
 
-if Path('/content/drive/MyDrive').exists():
-    path = Path('/content/drive/MyDrive/gopro_deblur')
+if Path(r'/content/drive/MyDrive').exists():
+    path = Path(r'/content/drive/MyDrive/gopro_deblur')
     format_path = path / 'format.json'
     blur_path = path / 'blur/images'
     sharp_path = path / 'sharp/images'
@@ -30,22 +30,22 @@ if Path('/content/drive/MyDrive').exists():
     if not model_save_dir.exists():
         model_save_dir.mkdir()
 else:
-    path = Path('Z:\datasets\gopro_deblur')
+    path = Path(r'Z:\datasets\gopro_deblur')
     format_path = path / 'format.json'
     blur_path = path / 'blur\images renamed'
     sharp_path = path / 'sharp\images renamed'
-    model_save_dir = Path('Z:\PYTHON\projects\Motion deblurring\models')
+    model_save_dir = Path(r'Z:\PYTHON\projects\Motion deblurring\models')
 
 result_save_dir = Path(r'Z:\PYTHON\projects\Motion deblurring\train_model\results')
 
 if not model_save_dir.exists():
     model_save_dir.mkdir()
 
-MODEL_NAME = '192x192_20_images'
+MODEL_NAME = '384x384_20_images'
 
 train_transforms = v2.Compose([
     v2.ToImage(),
-    v2.RandomCrop((192, 192)),
+    v2.RandomCrop((384, 384)),
     v2.RandomHorizontalFlip(p=0.5),
     v2.RandomVerticalFlip(p=0.5),
     v2.RandomChoice([
