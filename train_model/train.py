@@ -22,22 +22,20 @@ import matplotlib.pyplot as plt
 from utils.Losses import Scharr_loss
 
 if Path('/content/drive/MyDrive').exists():
-    path = Path('/content/drive/MyDrive/datasets/gopro_deblur')
-else:
-    path = Path('Z:\datasets\gopro_deblur')
-
-if Path('/content/drive/MyDrive').exists():
     path = Path('/content/drive/MyDrive/gopro_deblur')
     format_path = path / 'format.json'
     blur_path = path / 'blur/images'
     sharp_path = path / 'sharp/images'
+    model_save_dir = path / 'checkpoints'
+    if not model_save_dir.exists():
+        model_save_dir.mkdir()
 else:
     path = Path('Z:\datasets\gopro_deblur')
     format_path = path / 'format.json'
     blur_path = path / 'blur\images renamed'
     sharp_path = path / 'sharp\images renamed'
+    model_save_dir = Path('Z:\PYTHON\projects\Motion deblurring\models')
 
-model_save_dir = Path('Z:\PYTHON\projects\Motion deblurring\models')
 result_save_dir = Path(r'Z:\PYTHON\projects\Motion deblurring\train_model\results')
 
 if not model_save_dir.exists():
@@ -203,7 +201,7 @@ def train_and_val(train_load, val_load,
     train_history = []
     val_history = []
 
-    print(f'{epochs * len(train_load)} grad_descents training is started')
+    print(f'{epochs * len(train_load)} grad descents training is started')
 
     for epoch in range(start_epoch, epochs):
         model.train()
