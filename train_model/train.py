@@ -21,8 +21,8 @@ import matplotlib.pyplot as plt
 #from fft_deblur.freq_filtering import fft_img, ifft_img, create_filter, create_gaussian_filter, normalize
 from utils.Losses import Scharr_loss
 
-if Path(r'/content/drive/MyDrive').exists():
-    path = Path(r'/content/drive/MyDrive/gopro_deblur')
+if Path('/content/drive/MyDrive').exists():
+    path = Path('/content/drive/MyDrive/gopro_deblur')
     format_path = path / 'format.json'
     blur_path = path / 'blur/images'
     sharp_path = path / 'sharp/images'
@@ -134,7 +134,7 @@ val_dataset = Dataset(val_blur, val_sharp, transforms=val_transforms)
 test_dataset = Dataset(test_blur, test_sharp, transforms=val_transforms)
 
 tiny_dataset = Dataset(train_blur, train_sharp, transforms=train_transforms)
-tiny_dataset = torch.utils.data.Subset(tiny_dataset, range(0,20))
+tiny_dataset = torch.utils.data.Subset(tiny_dataset, range(0,6))
 
 tiny_dataset_val = Dataset(train_blur, train_sharp, transforms=val_transforms)
 tiny_dataset_val = torch.utils.data.Subset(tiny_dataset_val, [0,1])
@@ -154,7 +154,7 @@ DEVICE = torch.device("cuda:0")
 
 MODEL = Net(10000).to(DEVICE)
 
-BATCH_SIZE = 10
+BATCH_SIZE = 3
 
 EPOCHS =25000
 
